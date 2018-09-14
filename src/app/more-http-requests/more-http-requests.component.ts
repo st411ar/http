@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Response } from '@angular/http';
 
 @Component({
@@ -42,6 +42,27 @@ export class MoreHttpRequestsComponent implements OnInit {
 				this.isLoading = false;
 			}
 		);
+	}
+
+	makeHeaders(): void {
+		const headers: HttpHeaders = new HttpHeaders({
+			'X-API-TOKEN': 'ng-book'
+		});
+
+		const request: HttpRequest<any> = new HttpRequest<any>(
+			'GET',
+			'https://jsonplaceholder.typicode.com/posts/1',
+			{
+				headers: headers
+			}
+		);
+
+		this.http.request(request).subscribe(
+			(data: any) => {
+				this.data = data['body'];
+			}
+		);
+
 	}
 
 }
