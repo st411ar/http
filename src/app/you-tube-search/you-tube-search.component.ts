@@ -9,6 +9,7 @@ import { SearchResult } from './search-result/search-result.model';
 })
 export class YouTubeSearchComponent implements OnInit {
 	isLoading: boolean;
+	results: SearchResult[];
 
 	constructor() {}
 
@@ -18,6 +19,7 @@ export class YouTubeSearchComponent implements OnInit {
 	updateResults(results: SearchResult[]): void {
 		console.log(`YouTubeSearchComponent.updateResults()`);
 		console.log(results);
+		this.results = results;
 	}
 
 }
