@@ -6,7 +6,7 @@ import {
 	Output
 } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { debounceTime, filter, flatMap, map } from 'rxjs/operators';
+import { debounceTime, filter, map, switchAll, tap } from 'rxjs/operators';
 import { Response } from '@angular/http';
 
 import { SearchResult } from '../search-result/search-result.model';
@@ -32,20 +32,24 @@ export class SearchBoxComponent implements OnInit {
 				map((event: any) => event.target.value),
 				filter((text: string) => text.length > 1),
 				debounceTime(250),
-				flatMap((query: string) => this.youtube.search(query))
+				tap(() => this.loading.emit(true)),
+				map((query: string) => this.youtube.search(query)),
+				switchAll()
 			).subscribe(
 				(results: SearchResult[]) => {
-					console.log(results);
+					this.loading.emit(false);
+					this.results.emit(results);
+				},
+				(err: any) => {
+					console.log(err);
+					this.loading.emit(false);
+				},
+				() => {
+					this.loading.emit(false);
 				}
 			);
 		;
 				
-	}
-
-
-	search(): void {
-		let query: string = this.el.nativeElement.value;
-		console.log(query);
 	}
 
 }
