@@ -32,4 +32,16 @@ export class MoreHttpRequestsComponent implements OnInit {
 		);
 	}
 
+	makeDelete(): void {
+		this.isLoading = true;
+		this.http.delete(
+			'https://jsonplaceholder.typicode.com/posts/1'
+		).subscribe(
+			(data: Response) => {
+				this.data = data;
+				this.isLoading = false;
+			}
+		);
+	}
+
 }
